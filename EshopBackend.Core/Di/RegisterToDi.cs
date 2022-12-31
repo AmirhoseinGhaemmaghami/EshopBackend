@@ -14,6 +14,8 @@ namespace EshopBackend.Core.Di
         public static IServiceCollection AddCoreServices(this IServiceCollection services)
         {
             return services.AddScoped<IUserService, UserService>();
+            return services.AddScoped<ISliderService, SliderService>();
+            return services.AddScoped<IProductService, ProductService>();
         }
     }
 }
