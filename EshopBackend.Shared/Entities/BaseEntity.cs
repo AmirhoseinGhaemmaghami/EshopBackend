@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EshopBackend.Data.NewFolder
+namespace EshopBackend.Shared.Entities
 {
     public class BaseEntity
     {

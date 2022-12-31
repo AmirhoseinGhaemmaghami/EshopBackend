@@ -1,4 +1,6 @@
 ﻿using EshopBackend.Data.Context;
+using EshopBackend.Data.Repositories;
+using EshopBackend.Shared.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -15,6 +17,9 @@ namespace EshopBackend.Data.DI
             this IServiceCollection services, string ConnectionStr)
         {
             services.AddDbContext<EshopContext>(dbo => dbo.UseSqlServer(ConnectionStr));
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+
             return services;
         }
     }

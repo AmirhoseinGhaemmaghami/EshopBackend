@@ -1,5 +1,5 @@
-﻿using EshopBackend.Data.Entities.Access;
-using EshopBackend.Data.NewFolder;
+﻿using EshopBackend.Shared.Entities;
+using EshopBackend.Shared.Entities.Access;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,9 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EshopBackend.Data.Entities.Account
+namespace EshopBackend.Shared.Entities.Account
 {
-    public class User: BaseEntity
+    public class User : BaseEntity
     {
         #region propeties
 

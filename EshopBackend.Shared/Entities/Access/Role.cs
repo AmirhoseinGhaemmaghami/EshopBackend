@@ -1,4 +1,4 @@
-﻿using EshopBackend.Data.NewFolder;
+﻿using EshopBackend.Shared.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EshopBackend.Data.Entities.Access
+namespace EshopBackend.Shared.Entities.Access
 {
-    public class Role: BaseEntity 
+    public class Role : BaseEntity
     {
         #region properties
 

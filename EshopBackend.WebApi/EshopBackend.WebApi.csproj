@@ -15,10 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\EshopBackend.Core\EshopBackend.Core.csproj" />
     <ProjectReference Include="..\EshopBackend.Data\EshopBackend.Data.csproj" />
   </ItemGroup>
 

@@ -1,5 +1,5 @@
-﻿using EshopBackend.Data.Entities.Access;
-using EshopBackend.Data.Entities.Account;
+﻿using EshopBackend.Shared.Entities.Access;
+using EshopBackend.Shared.Entities.Account;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EshopBackend.Data.Context
 {
-    internal class EshopContext : DbContext
+    public class EshopContext : DbContext
     {
         public EshopContext(DbContextOptions<EshopContext> options) : base(options)
         {
