@@ -1,5 +1,6 @@
 ﻿using EshopBackend.Shared.Entities.Account;
 using EshopBackend.Shared.Interfaces;
+using EshopBackend.WebApi.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -18,9 +19,9 @@ namespace EshopBackend.WebApi.Controllers
         }
         // GET: api/<ValuesController>
         [HttpGet]
-        public async Task<List<User>> Get()
+        public async Task<ActionResult<List<User>>> Get()
         {
-            return await this.userService.GetUsers();
+            return ApiResponse.Ok(await this.userService.GetUsers());
         }
 
         // GET api/<ValuesController>/5

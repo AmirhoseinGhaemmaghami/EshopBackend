@@ -1,5 +1,6 @@
 ﻿using EshopBackend.Shared.Entities.Site;
 using EshopBackend.Shared.Interfaces;
+using EshopBackend.WebApi.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using System.Runtime.CompilerServices;
 
@@ -20,14 +21,15 @@ namespace EshopBackend.WebApi.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Slider>>> Get()
         {
-            return Ok(await this.sliderService.GetActiveSliders());
+            return ApiResponse.Ok(await this.sliderService.GetActiveSliders());
         }
 
         // GET api/<SliderController>/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Slider>> Get(int id)
         {
-            return Ok(await this.sliderService.GetSliderById(id));
+            //return Ok(await this.sliderService.GetSliderById(id));
+            return ApiResponse.BadRequest("sdfkj");
         }
 
         // POST api/<SliderController>
