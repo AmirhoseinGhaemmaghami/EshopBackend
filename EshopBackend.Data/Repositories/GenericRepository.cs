@@ -68,10 +68,5 @@ namespace EshopBackend.Data.Repositories
         {
             return await this.eshopContext.SaveChangesAsync() > 0;
         }
-
-        public void Dispose()
-        {
-            this.eshopContext?.Dispose();
-        }
     }
 }

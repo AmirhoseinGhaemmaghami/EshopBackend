@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EshopBackend.Shared.Interfaces
 {
-    public interface IGenericRepository<T> : IDisposable where T : BaseEntity
+    public interface IGenericRepository<T> where T : BaseEntity
     {
         IQueryable<T> GetEntitiesQuery();
 
