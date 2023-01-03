@@ -1,19 +1,21 @@
 using EshopBackend.Core.Di;
 using EshopBackend.Data.DI;
+using EshopBackend.WebApi.DI;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
+builder.Services.AddApiServices(builder.Configuration);
 builder.Services.AddDataService(builder.Configuration.GetConnectionString("EshopConnectionString"));
 builder.Services.AddCoreServices();
 
 var app = builder.Build();
+app.UseStaticFiles();
+app.UseCors("any");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -23,7 +25,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
