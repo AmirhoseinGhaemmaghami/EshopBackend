@@ -18,7 +18,7 @@ namespace EshopBackend.Data.DI
         {
             services.AddDbContext<EshopContext>(dbo => dbo.UseSqlServer(ConnectionStr));
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;
         }
