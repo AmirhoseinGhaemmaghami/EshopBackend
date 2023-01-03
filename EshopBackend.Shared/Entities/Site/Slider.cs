@@ -18,7 +18,7 @@ namespace EshopBackend.Shared.Entities.Site
         public string Body { get; set; }
 
         [MaxLength(200)]
-        public string Url { get; set; }
+        public string? Url { get; set; }
 
         [Required]
         [MaxLength(200)]
