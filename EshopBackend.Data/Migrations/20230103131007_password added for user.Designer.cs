@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EshopBackend.Data.Migrations
 {
     [DbContext(typeof(EshopContext))]
-    [Migration("20221231132446_product and slide and categories added")]
-    partial class productandslideandcategoriesadded
+    [Migration("20230103131007_password added for user")]
+    partial class passwordaddedforuser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -132,6 +132,11 @@ namespace EshopBackend.Data.Migrations
                     b.Property<DateTime>("LastUpdateDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Users");
@@ -170,7 +175,6 @@ namespace EshopBackend.Data.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Url")
-                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 

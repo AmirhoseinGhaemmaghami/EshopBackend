@@ -26,6 +26,10 @@ namespace EshopBackend.Shared.Entities.Account
         [MaxLength(100)]
         public string LastName { get; set; }
 
+        [Required]
+        [MaxLength(100)]
+        public string Password { get; set; }
+
         public bool IsActivated { get; set; }
 
         public string EmailActivationCode { get; set; }
