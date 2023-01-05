@@ -14,9 +14,15 @@ namespace EshopBackend.WebApi.DI
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
-            services.AddCors(opt => opt.AddPolicy("any", policy => policy.AllowAnyOrigin()));
+            services.AddCors(opt => opt.AddPolicy("any", policy =>
+            {
+                policy.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+            }));
 
             services.AddJWtAuthentication(configuration);
+            services.AddAuthorization();
             return services;
         }
 
@@ -37,7 +43,9 @@ namespace EshopBackend.WebApi.DI
                         ValidIssuer = issuer,
 
                         ValidateIssuerSigningKey = true,
-                        ValidateIssuer= true
+                        ValidateIssuer = true,
+
+                        ValidateAudience = false
                     };
                 });
 
