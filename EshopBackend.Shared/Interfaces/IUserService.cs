@@ -17,5 +17,7 @@ namespace EshopBackend.Shared.Interfaces
         Task<bool> IsDuplicateEmail(string email);
 
         Task<LoginResultDto> Login(LoginInputDto loginInputDto);
+
+        Task<LoginResultDto> GetUserByEmail(string email);
     }
 }

@@ -27,6 +27,35 @@ namespace EshopBackend.Core.Services
             this.tokenServcie = tokenServcie;
         }
 
+        public async Task<LoginResultDto> GetUserByEmail(string email)
+        {
+            var user = await this.genericRepository.GetEntitiesQuery()
+                .SingleOrDefaultAsync(u => u.Email == email.ToLower().Trim());
+            if (user == null)
+                return null;
+
+            if (!user.IsActivated)
+            {
+                return new LoginResultDto()
+                {
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    IsActivated = user.IsActivated
+                };
+            }
+            var token = tokenServcie.createToken(user);
+            return new LoginResultDto()
+            {
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Token = token.Token,
+                TokenExpireDate = token.ExpireDate,
+                IsActivated = user.IsActivated
+            };
+        }
+
         public async Task<List<User>> GetUsers()
         {
             try
@@ -45,6 +74,7 @@ namespace EshopBackend.Core.Services
         {
             var emailTocheck = email.ToLower().Trim();
 
+
             return await this.genericRepository.GetEntitiesQuery()
                 .AnyAsync(u => u.Email == emailTocheck);
         }
@@ -58,6 +88,16 @@ namespace EshopBackend.Core.Services
             if (user != null)
                 if (hashUtility.VerifyHash(loginInputDto.Password, user.Password))
                 {
+                    if (!user.IsActivated)
+                    {
+                        return new LoginResultDto()
+                        {
+                            Email = user.Email,
+                            FirstName = user.FirstName,
+                            LastName = user.LastName,
+                            IsActivated = user.IsActivated
+                        };
+                    }
                     var token = tokenServcie.createToken(user);
                     return new LoginResultDto()
                     {
