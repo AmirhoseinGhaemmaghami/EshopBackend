@@ -34,9 +34,7 @@ namespace EshopBackend.Core.Services
 
         public async Task<List<Slider>> GetActiveSliders()
         {
-            return await repository.GetEntitiesQuery()
-                .Where(s => !s.Deleted)
-                .ToListAsync();
+            return await repository.GetAllWithSpecAsync(filter: s=> !s.Deleted);
         }
 
         public async Task<List<Slider>> GetAllSliders()

@@ -1,7 +1,9 @@
 ﻿using EshopBackend.Shared.Entities;
+using EshopBackend.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,9 +11,23 @@ namespace EshopBackend.Shared.Interfaces
 {
     public interface IGenericRepository<T> where T : BaseEntity
     {
-        IQueryable<T> GetEntitiesQuery();
-
         Task<IEnumerable<T>> GetAllAsync();
+
+        Task<T?> GetSingleWithSpecAsync(
+            Expression<Func<T, bool>>? filter = null,
+            Expression<Func<T, Object>>? OrderByAsc = null,
+            Expression<Func<T, Object>>? OrderByDesc = null,
+            Paging? paging = null,
+            params Expression<Func<T, Object>>[] Includes);
+
+        Task<List<T>> GetAllWithSpecAsync(
+            Expression<Func<T, bool>>? filter = null,
+            Expression<Func<T, Object>>? OrderByAsc = null,
+            Expression<Func<T, Object>>? OrderByDesc = null,
+            Paging? paging = null,
+            params Expression<Func<T, Object>>[] Includes);
+
+        Task<int> CountWithSpecAsync(Expression<Func<T, bool>>? filter = null);
 
         Task<T?> GetByIdAsync(long id);
 

@@ -50,8 +50,7 @@ namespace EshopBackend.Core.Services
 
         public async Task<LoginResultDto> GetUserByEmail(string email)
         {
-            var user = await this.genericRepository.GetEntitiesQuery()
-                .SingleOrDefaultAsync(u => u.Email == email.ToLower().Trim());
+            var user = await this.genericRepository.GetSingleWithSpecAsync(u => u.Email == email.ToLower().Trim());
             if (user == null)
                 return null;
 
@@ -96,16 +95,14 @@ namespace EshopBackend.Core.Services
             var emailTocheck = email.ToLower().Trim();
 
 
-            return await this.genericRepository.GetEntitiesQuery()
-                .AnyAsync(u => u.Email == emailTocheck);
+            return await this.genericRepository.GetSingleWithSpecAsync(u => u.Email == emailTocheck) != null;
         }
 
         public async Task<LoginResultDto> Login(LoginInputDto loginInputDto)
         {
             var emailToCheck = loginInputDto.Email;
             var passwordToCheck = loginInputDto.Password;
-            var user = await genericRepository.GetEntitiesQuery()
-                .FirstOrDefaultAsync(user => user.Email == loginInputDto.Email);
+            var user = await genericRepository.GetSingleWithSpecAsync(user => user.Email == loginInputDto.Email);
             if (user != null)
                 if (hashUtility.VerifyHash(loginInputDto.Password, user.Password))
                 {
