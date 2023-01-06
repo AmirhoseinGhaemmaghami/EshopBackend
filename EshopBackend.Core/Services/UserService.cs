@@ -1,14 +1,18 @@
-﻿using EshopBackend.Core.Jwt;
+﻿using AngleSharp.Dom;
+using AngleSharp.Io;
+using EshopBackend.Core.Jwt;
 using EshopBackend.Core.Security;
 using EshopBackend.Shared.Dtos.Account;
 using EshopBackend.Shared.Entities.Account;
 using EshopBackend.Shared.Interfaces;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 namespace EshopBackend.Core.Services
@@ -18,13 +22,30 @@ namespace EshopBackend.Core.Services
         private readonly IGenericRepository<User> genericRepository;
         private readonly IHashUtility hashUtility;
         private readonly ITokenServcie tokenServcie;
+        private readonly IEmailConfirmationService emailService;
 
         public UserService(IGenericRepository<User> genericRepository,
-            IHashUtility hashUtility, ITokenServcie tokenServcie)
+            IHashUtility hashUtility, ITokenServcie tokenServcie, IEmailConfirmationService emailService)
         {
             this.genericRepository = genericRepository;
             this.hashUtility = hashUtility;
             this.tokenServcie = tokenServcie;
+            this.emailService = emailService;
+        }
+
+        public async Task<bool> ConfirmEmail(int userId, string code)
+        {
+            var uuidCode = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
+            var user = await this.genericRepository.GetByIdAsync(userId);
+            if(user?.EmailActivationCode == uuidCode)
+            {
+                user.IsActivated = true;
+                user.EmailActivationCode = Guid.NewGuid().ToString();
+                await this.genericRepository.UpdateAsync(user);
+                await this.genericRepository.SaveChanges();
+                return true;
+            }
+            return false;
         }
 
         public async Task<LoginResultDto> GetUserByEmail(string email)
@@ -132,6 +153,9 @@ namespace EshopBackend.Core.Services
             };
             await this.genericRepository.AddAsync(user);
             var res = await genericRepository.SaveChanges();
+
+            await this.emailService.SendVefrificationEmail(user);
+
             return new RegisterResultDto() { Success = res, DuplicateEmail = false };
         }
     }

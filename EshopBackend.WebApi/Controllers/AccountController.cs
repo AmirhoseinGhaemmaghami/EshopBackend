@@ -57,5 +57,11 @@ namespace EshopBackend.WebApi.Controllers
         {
             return Ok();
         }
+
+        [HttpPost("ConfirmEmail")]
+        public async Task<ActionResult<bool>> ConfirmEmail([FromQuery]int userId, [FromQuery] string code)
+        {
+            return ApiResponse.Ok(await this.userService.ConfirmEmail(userId, code));
+        }
     }
 }

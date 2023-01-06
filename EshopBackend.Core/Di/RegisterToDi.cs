@@ -1,6 +1,7 @@
 ﻿using EshopBackend.Core.Jwt;
 using EshopBackend.Core.Security;
 using EshopBackend.Core.Services;
+using EshopBackend.Core.Services.Utilities;
 using EshopBackend.Shared.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -25,6 +26,8 @@ namespace EshopBackend.Core.Di
             services.AddScoped<IHashUtility, HashUtility>();
 
             services.AddScoped<ITokenServcie, JwtTokenServcie>();
+            services.AddScoped<IEmailSender, EmailSender>();
+            services.AddScoped<IEmailConfirmationService, EmailConfirmationService>();
 
             return services;
         }

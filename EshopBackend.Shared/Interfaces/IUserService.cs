@@ -19,5 +19,7 @@ namespace EshopBackend.Shared.Interfaces
         Task<LoginResultDto> Login(LoginInputDto loginInputDto);
 
         Task<LoginResultDto> GetUserByEmail(string email);
+
+        Task<bool> ConfirmEmail(int userId, string code);
     }
 }
