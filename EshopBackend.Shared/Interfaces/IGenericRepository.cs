@@ -1,5 +1,5 @@
-﻿using EshopBackend.Shared.Entities;
-using EshopBackend.Shared.Models;
+﻿using EshopBackend.Shared.Dtos.Paging;
+using EshopBackend.Shared.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,14 +17,14 @@ namespace EshopBackend.Shared.Interfaces
             Expression<Func<T, bool>>? filter = null,
             Expression<Func<T, Object>>? OrderByAsc = null,
             Expression<Func<T, Object>>? OrderByDesc = null,
-            Paging? paging = null,
+            PageInput? paging = null,
             params Expression<Func<T, Object>>[] Includes);
 
         Task<List<T>> GetAllWithSpecAsync(
             Expression<Func<T, bool>>? filter = null,
             Expression<Func<T, Object>>? OrderByAsc = null,
             Expression<Func<T, Object>>? OrderByDesc = null,
-            Paging? paging = null,
+            PageInput? paging = null,
             params Expression<Func<T, Object>>[] Includes);
 
         Task<int> CountWithSpecAsync(Expression<Func<T, bool>>? filter = null);

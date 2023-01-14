@@ -15,6 +15,11 @@ namespace EshopBackend.WebApi.Helpers
             return new NotFoundObjectResult(new ApiErrorModel(404, message));
         }
 
+        public static UnauthorizedObjectResult Unauthorized(string? message = null)
+        {
+            return new UnauthorizedObjectResult(new ApiErrorModel(401));
+        }
+
         public static BadRequestObjectResult BadRequest(string? message = null)
         {
             return new BadRequestObjectResult(new ApiErrorModel(400, message));

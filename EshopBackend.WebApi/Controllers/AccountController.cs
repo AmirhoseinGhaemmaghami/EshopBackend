@@ -23,7 +23,7 @@ namespace EshopBackend.WebApi.Controllers
         public async Task<ActionResult<LoginResultDto>> GetCurrentUser()
         {
             if(!this.HttpContext.User.Identity?.IsAuthenticated?? false)
-                return ApiResponse.NotFound("User is not Available");
+                return ApiResponse.Unauthorized();
             var email = this.HttpContext.User.FindFirstValue(ClaimTypes.Email);
             var res = await userService.GetUserByEmail(email);
             if (res != null)

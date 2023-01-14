@@ -1,7 +1,7 @@
 ﻿using EshopBackend.Data.Context;
+using EshopBackend.Shared.Dtos.Paging;
 using EshopBackend.Shared.Entities;
 using EshopBackend.Shared.Interfaces;
-using EshopBackend.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -66,7 +66,7 @@ namespace EshopBackend.Data.Repositories
             Expression<Func<T, bool>>? filter = null,
             Expression<Func<T, Object>>? OrderByAsc = null,
             Expression<Func<T, Object>>? OrderByDesc = null,
-            Paging? paging = null,
+            PageInput? paging = null,
             params Expression<Func<T, Object>>[] Includes)
         {
             var query = Evaluate(this.dbset, filter, OrderByAsc, OrderByDesc, paging, Includes);
@@ -77,7 +77,7 @@ namespace EshopBackend.Data.Repositories
             Expression<Func<T, bool>>? filter = null,
             Expression<Func<T, Object>>? OrderByAsc = null,
             Expression<Func<T, Object>>? OrderByDesc = null,
-            Paging? paging = null,
+            PageInput? paging = null,
             params Expression<Func<T, Object>>[] Includes)
         {
             var query = Evaluate(this.dbset, filter,OrderByAsc, OrderByDesc, paging, Includes);
@@ -94,7 +94,7 @@ namespace EshopBackend.Data.Repositories
             Expression<Func<T, bool>>? filter = null,
             Expression<Func<T, Object>>? OrderByAsc = null,
             Expression<Func<T, Object>>? OrderByDesc = null,
-            Paging? paging = null,
+            PageInput? paging = null,
             params Expression<Func<T, Object>>[] Includes)
         {
             if (filter != null)
