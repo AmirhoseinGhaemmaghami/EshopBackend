@@ -102,7 +102,7 @@ namespace EshopBackend.Data.Repositories
             if (OrderByAsc != null)
                 query = query.OrderBy(OrderByAsc);
             if (OrderByDesc != null)
-                query = query.OrderBy(OrderByDesc);
+                query = query.OrderByDescending(OrderByDesc);
             if (paging != null)
                 query = query.Skip((paging.PageId - 1) * paging.PageSize).Take(paging.PageSize);
             if (Includes.Any())

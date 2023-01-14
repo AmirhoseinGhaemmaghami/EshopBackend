@@ -1,4 +1,5 @@
 ﻿using EshopBackend.Shared.Dtos.Paging;
+using EshopBackend.Shared.Dtos.Sorting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EshopBackend.Shared.Dtos.Product
 {
-    public class ProductsWithSpecInput: PageInput
+    public class ProductsWithSpecInput: PagingSortingInput
     {
         public string? Title { get; set; }
 

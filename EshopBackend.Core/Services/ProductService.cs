@@ -51,8 +51,30 @@ namespace EshopBackend.Core.Services
                 && 
                 ((productIds != null && productIds.Contains(p.Id)) || productIds == null);
 
+            Expression<Func<Product, Object>> orderByAsc = null;
+            Expression<Func<Product, Object>> orderByDesc = null;
+            if (!String.IsNullOrEmpty(inp.SortColumn))
+            {
+                if (!String.IsNullOrEmpty(inp.SortOrder) && inp.SortOrder.ToUpper() == "ASC")
+                {
+                    if(inp.SortColumn.ToUpper() == "PRICE")
+                    {
+                        orderByAsc = p => p.Price;
+                    }
+                }
+                else if (!String.IsNullOrEmpty(inp.SortOrder) && inp.SortOrder.ToUpper() == "DESC")
+                {
+                    if (inp.SortColumn.ToUpper() == "PRICE")
+                    {
+                        orderByDesc = p => p.Price;
+                    }
+                }
+            }
 
-            return await productRepository.GetAllWithSpecAsync(whereExpr,
+            return await productRepository.GetAllWithSpecAsync(
+                whereExpr,
+                OrderByAsc:orderByAsc,
+                OrderByDesc:orderByDesc,
                 paging: new PageInput()
                 {
                     PageId = inp.PageId,
