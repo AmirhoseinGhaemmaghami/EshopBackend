@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.Reflection;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace EshopBackend.WebApi.DI
 {
@@ -23,6 +25,9 @@ namespace EshopBackend.WebApi.DI
 
             services.AddJWtAuthentication(configuration);
             services.AddAuthorization();
+
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
             return services;
         }
 
