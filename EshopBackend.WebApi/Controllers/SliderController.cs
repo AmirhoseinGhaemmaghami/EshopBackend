@@ -1,4 +1,6 @@
-﻿using EshopBackend.Shared.Entities.Site;
+﻿using AutoMapper;
+using EshopBackend.Shared.Dtos.Slider;
+using EshopBackend.Shared.Entities.Site;
 using EshopBackend.Shared.Interfaces;
 using EshopBackend.WebApi.Helpers;
 using Microsoft.AspNetCore.Mvc;
@@ -11,43 +13,20 @@ namespace EshopBackend.WebApi.Controllers
     public class SliderController : BaseController
     {
         private readonly ISliderService sliderService;
+        private readonly IMapper mapper;
 
-        public SliderController(ISliderService sliderService)
+        public SliderController(ISliderService sliderService, IMapper mapper)
         {
             this.sliderService = sliderService;
+            this.mapper = mapper;
         }
 
         // GET: api/<SliderController>
         [HttpGet]
-        public async Task<ActionResult<List<Slider>>> Get()
+        public async Task<ActionResult<List<SliderResultDto>>> Get()
         {
-            return ApiResponse.Ok(await this.sliderService.GetActiveSliders());
-        }
-
-        // GET api/<SliderController>/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Slider>> Get(int id)
-        {
-            //return Ok(await this.sliderService.GetSliderById(id));
-            return ApiResponse.BadRequest("sdfkj");
-        }
-
-        // POST api/<SliderController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<SliderController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<SliderController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            var sliders = await this.sliderService.GetActiveSliders();
+            return ApiResponse.Ok(mapper.Map<List<SliderResultDto>>(sliders));
         }
     }
 }

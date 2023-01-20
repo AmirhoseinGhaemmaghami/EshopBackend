@@ -16,12 +16,15 @@ namespace EshopBackend.Core.Services
     {
         private readonly IGenericRepository<Product> productRepository;
         private readonly IGenericRepository<ProductSelectedCategory> productSelectedCategoryRepository;
+        private readonly IGenericRepository<ProductGallery> productGalleryRepository;
 
         public ProductService(IGenericRepository<Product> productRepository,
-            IGenericRepository<ProductSelectedCategory> productSelectedCategoryRepository)
+            IGenericRepository<ProductSelectedCategory> productSelectedCategoryRepository,
+            IGenericRepository<ProductGallery> productGalleryRepository)
         {
             this.productRepository = productRepository;
             this.productSelectedCategoryRepository = productSelectedCategoryRepository;
+            this.productGalleryRepository = productGalleryRepository;
         }
 
         public async Task<Product> AddProduct(Product product)
@@ -29,6 +32,17 @@ namespace EshopBackend.Core.Services
             var res = await this.productRepository.AddAsync(product);
             await productRepository.SaveChanges();
             return res;
+        }
+
+        public async Task<List<ProductGallery>> GetGallery(long productId)
+        {
+            return await this.productGalleryRepository
+                .GetAllWithSpecAsync(pg => pg.ProductId == productId);
+        }
+
+        public async Task<Product> GetProductById(long productId)
+        {
+            return await this.productRepository.GetByIdAsync(productId);
         }
 
         public async Task<List<Product>> GetProducts(ProductsWithSpecInput inp)
@@ -48,7 +62,7 @@ namespace EshopBackend.Core.Services
                 &&
                 ((!String.IsNullOrEmpty(inp.Title) && p.Name.Contains(inp.Title)) ||
                 String.IsNullOrEmpty(inp.Title))
-                && 
+                &&
                 ((productIds != null && productIds.Contains(p.Id)) || productIds == null);
 
             Expression<Func<Product, Object>> orderByAsc = null;
@@ -57,7 +71,7 @@ namespace EshopBackend.Core.Services
             {
                 if (!String.IsNullOrEmpty(inp.SortOrder) && inp.SortOrder.ToUpper() == "ASC")
                 {
-                    if(inp.SortColumn.ToUpper() == "PRICE")
+                    if (inp.SortColumn.ToUpper() == "PRICE")
                     {
                         orderByAsc = p => p.Price;
                     }
@@ -73,8 +87,8 @@ namespace EshopBackend.Core.Services
 
             return await productRepository.GetAllWithSpecAsync(
                 whereExpr,
-                OrderByAsc:orderByAsc,
-                OrderByDesc:orderByDesc,
+                OrderByAsc: orderByAsc,
+                OrderByDesc: orderByDesc,
                 paging: new PageInput()
                 {
                     PageId = inp.PageId,
@@ -98,10 +112,25 @@ namespace EshopBackend.Core.Services
                 &&
                 ((!String.IsNullOrEmpty(inp.Title) && p.Name.Contains(inp.Title)) ||
                 String.IsNullOrEmpty(inp.Title))
-                && 
+                &&
                 ((productIds != null && productIds.Contains(p.Id)) || productIds == null);
 
             return await productRepository.CountWithSpecAsync(expr);
+        }
+
+        public async Task<List<Product>> GetRelatedProducts(long productId)
+        {
+            var categoryIds = (await this.productSelectedCategoryRepository
+                .GetAllWithSpecAsync(pc => pc.ProductId == productId))
+                .Select(pc => pc.ProductCategoryId);
+
+            var products = (await this.productSelectedCategoryRepository
+                .GetAllWithSpecAsync(pc => categoryIds.Contains(pc.ProductCategoryId) && pc.ProductId != productId,
+                Includes: pc => pc.Product))
+                .Select(pc => pc.Product)
+                .Distinct();
+
+            return products.ToList();
         }
 
         public async Task<Product> UpdateProduct(Product product)

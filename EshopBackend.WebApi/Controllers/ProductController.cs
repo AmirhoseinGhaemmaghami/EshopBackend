@@ -14,16 +14,18 @@ namespace EshopBackend.WebApi.Controllers
     {
         private readonly IProductService productService;
         private readonly IMapper mapper;
+        private readonly IConfiguration configuration;
 
-        public ProductController(IProductService productService, IMapper mapper)
+        public ProductController(IProductService productService, IMapper mapper, IConfiguration configuration)
         {
             this.productService = productService;
             this.mapper = mapper;
+            this.configuration = configuration;
         }
 
         // GET: api/<ProductController>
         [HttpGet]
-        public async Task<ActionResult<Pagination<ProductResultDto>>> Get([FromQuery]ProductsWithSpecInput productsWithSpecInput)
+        public async Task<ActionResult<Pagination<ProductResultDto>>> Get([FromQuery] ProductsWithSpecInput productsWithSpecInput)
         {
             var products = await this.productService.GetProducts(productsWithSpecInput);
             var count = await this.productService.GetProductsCount(productsWithSpecInput);
@@ -39,15 +41,39 @@ namespace EshopBackend.WebApi.Controllers
 
         // GET api/<ProductController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<ActionResult<ProductResultDto>> Get(long id)
         {
-            return "value";
+            var res = await this.productService.GetProductById(id);
+            if (res != null)
+                return ApiResponse.Ok(mapper.Map<ProductResultDto>(res));
+            return ApiResponse.NotFound("Product Not Found");
         }
 
-        // POST api/<ProductController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        // GET api/<ProductController>/5
+        [HttpGet("ProductWithAllDetails/{id}")]
+        public async Task<ActionResult<List<ProductWithDetailsResultDto>>> GetProductWithDetails(long id)
         {
+            var resProduct = await this.productService.GetProductById(id);
+            var resGalley = await this.productService.GetGallery(id);
+
+            if (resProduct != null)
+            {
+                var ret = new ProductWithDetailsResultDto()
+                {
+                    ProductResultDto = mapper.Map<ProductResultDto>(resProduct),
+                    ProductGalleryResultDto = mapper.Map<ProductGalleryResultDto>(resGalley)
+                };
+                return ApiResponse.Ok(mapper.Map<ProductWithDetailsResultDto>(ret));
+            }
+            return ApiResponse.NotFound("Product Not Found");
+        }
+
+        [HttpGet("Related/{id}")]
+        public async Task<ActionResult<List<ProductResultDto>>> GetRelatedProducts(long id)
+        {
+            List<Product> ret = await this.productService.GetRelatedProducts(id);
+
+            return ApiResponse.Ok(mapper.Map<List<ProductResultDto>>(ret));
         }
 
         // PUT api/<ProductController>/5
