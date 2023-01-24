@@ -39,7 +39,7 @@ namespace EshopBackend.Data.Repositories
             }
             if (!this.repositories.ContainsKey(name))
             {
-                var repositorytype = typeof(GenericRepository<T>);
+                var repositorytype = typeof(GenericRepository<>);
                 var repositoryInstance = Activator.CreateInstance(
                         repositorytype.MakeGenericType(typeof(T)), this.context);
 
