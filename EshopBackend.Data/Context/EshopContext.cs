@@ -44,6 +44,7 @@ namespace EshopBackend.Data.Context
         public DbSet<ProductSelectedCategory> ProductSelectedCategories { get; set; }
         public DbSet<ProductGallery> ProductGalleries { get; set; }
         public DbSet<ProductVisit> ProductVisits { get; set; }
+        public DbSet<ProductComment> ProductComments { get; set; }
 
         #endregion
     }

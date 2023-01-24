@@ -1,5 +1,6 @@
 ﻿using EshopBackend.Shared.Dtos.Paging;
 using EshopBackend.Shared.Dtos.Product;
+using EshopBackend.Shared.Dtos.ProductComment;
 using EshopBackend.Shared.Entities.Store;
 using EshopBackend.Shared.Interfaces;
 using System;
@@ -17,14 +18,17 @@ namespace EshopBackend.Core.Services
         private readonly IGenericRepository<Product> productRepository;
         private readonly IGenericRepository<ProductSelectedCategory> productSelectedCategoryRepository;
         private readonly IGenericRepository<ProductGallery> productGalleryRepository;
+        private readonly IGenericRepository<ProductComment> productCommentRepository;
 
         public ProductService(IGenericRepository<Product> productRepository,
             IGenericRepository<ProductSelectedCategory> productSelectedCategoryRepository,
-            IGenericRepository<ProductGallery> productGalleryRepository)
+            IGenericRepository<ProductGallery> productGalleryRepository,
+            IGenericRepository<ProductComment> ProductCommentRepository)
         {
             this.productRepository = productRepository;
             this.productSelectedCategoryRepository = productSelectedCategoryRepository;
             this.productGalleryRepository = productGalleryRepository;
+            productCommentRepository = ProductCommentRepository;
         }
 
         public async Task<Product> AddProduct(Product product)
@@ -33,6 +37,7 @@ namespace EshopBackend.Core.Services
             await productRepository.SaveChanges();
             return res;
         }
+
 
         public async Task<List<ProductGallery>> GetGallery(long productId)
         {

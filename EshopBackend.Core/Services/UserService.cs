@@ -119,6 +119,7 @@ namespace EshopBackend.Core.Services
                     var token = tokenServcie.createToken(user);
                     return new LoginResultDto()
                     {
+                        UserId = user.Id,
                         Email = user.Email,
                         FirstName = user.FirstName,
                         LastName = user.LastName,

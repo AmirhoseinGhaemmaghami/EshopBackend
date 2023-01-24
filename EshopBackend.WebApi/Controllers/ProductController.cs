@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using EshopBackend.Shared.Dtos.Paging;
 using EshopBackend.Shared.Dtos.Product;
+using EshopBackend.Shared.Dtos.ProductComment;
 using EshopBackend.Shared.Entities.Store;
 using EshopBackend.Shared.Interfaces;
 using EshopBackend.WebApi.Helpers;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,12 +17,15 @@ namespace EshopBackend.WebApi.Controllers
         private readonly IProductService productService;
         private readonly IMapper mapper;
         private readonly IConfiguration configuration;
+        private readonly IProductCommentService productCommentService;
 
-        public ProductController(IProductService productService, IMapper mapper, IConfiguration configuration)
+        public ProductController(IProductService productService, IMapper mapper,
+            IConfiguration configuration, IProductCommentService productCommentService)
         {
             this.productService = productService;
             this.mapper = mapper;
             this.configuration = configuration;
+            this.productCommentService = productCommentService;
         }
 
         // GET: api/<ProductController>
@@ -74,6 +79,28 @@ namespace EshopBackend.WebApi.Controllers
             List<Product> ret = await this.productService.GetRelatedProducts(id);
 
             return ApiResponse.Ok(mapper.Map<List<ProductResultDto>>(ret));
+        }
+
+        [HttpGet("Comments/{id}")]
+        public async Task<ActionResult<List<ProductCommentResultDto>>> GetProductsComments(long id)
+        {
+            List<ProductComment> ret = await this.productCommentService.GetProductComments(id);
+
+            return ApiResponse.Ok(mapper.Map<List<ProductCommentResultDto>>(ret));
+        }
+
+        [HttpPost("Comments")]
+        public async Task<ActionResult<bool>> AddProductComment
+            (ProductCommentInputDto productCommentInputDto)
+        {
+            if (!this.User.Identity.IsAuthenticated)
+                return ApiResponse.Unauthorized();
+
+            var email = this.User.FindFirst(ClaimTypes.Email);
+
+            var ret = await this.productCommentService.AddProductComment(productCommentInputDto, email.Value);
+
+            return ApiResponse.Ok(ret);
         }
 
         // PUT api/<ProductController>/5
