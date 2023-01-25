@@ -96,9 +96,10 @@ namespace EshopBackend.WebApi.Controllers
             if (!this.User.Identity.IsAuthenticated)
                 return ApiResponse.Unauthorized();
 
-            var email = this.User.FindFirst(ClaimTypes.Email);
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier);
 
-            var ret = await this.productCommentService.AddProductComment(productCommentInputDto, email.Value);
+            var ret = await this.productCommentService.AddProductComment(productCommentInputDto
+                , Convert.ToInt64(userId.Value));
 
             return ApiResponse.Ok(ret);
         }

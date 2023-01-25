@@ -29,7 +29,8 @@ namespace EshopBackend.Core.Jwt
             var claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.Name, user.FirstName),
-                new Claim(ClaimTypes.Email, user.Email)
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
             };
 
             var jwthandler = new JwtSecurityTokenHandler();
