@@ -10,9 +10,9 @@ namespace EshopBackend.WebApi.Helpers
             return new OkObjectResult(obj);
         }
 
-        public static NotFoundObjectResult NotFound(string? message = null)
+        public static NotFoundObjectResult NotFound(string? message = null, bool critical = true)
         {
-            return new NotFoundObjectResult(new ApiErrorModel(404, message));
+            return new NotFoundObjectResult(new ApiErrorModel(404, message) { Critical = critical });
         }
 
         public static UnauthorizedObjectResult Unauthorized(string? message = null)
@@ -28,7 +28,7 @@ namespace EshopBackend.WebApi.Helpers
         public static BadRequestObjectResult BadRequest(List<string> Errors)
         {
             return new BadRequestObjectResult(
-                new ApiValidationModel() { Errors = Errors});
+                new ApiValidationModel() { Errors = Errors });
         }
     }
 }

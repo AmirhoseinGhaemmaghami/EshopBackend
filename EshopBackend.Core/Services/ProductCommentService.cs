@@ -20,11 +20,11 @@ namespace EshopBackend.Core.Services
             this.unitOfWork = unitOfWork;
         }
 
-        public async Task<bool> AddProductComment(ProductCommentInputDto productCommentInputDto, string email)
+        public async Task<bool> AddProductComment(ProductCommentInputDto productCommentInputDto, long userId)
         {
             try
             {
-                var user = await this.unitOfWork.Repository<User>().GetSingleWithSpecAsync(u => u.Email == email);
+                var user = await this.unitOfWork.Repository<User>().GetByIdAsync(userId);
                 if (user == null)
                     return false;
 

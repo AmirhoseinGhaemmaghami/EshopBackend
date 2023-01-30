@@ -24,8 +24,8 @@ namespace EshopBackend.WebApi.Controllers
         {
             if(!this.HttpContext.User.Identity?.IsAuthenticated?? false)
                 return ApiResponse.Unauthorized();
-            var email = this.HttpContext.User.FindFirstValue(ClaimTypes.Email);
-            var res = await userService.GetUserByEmail(email);
+            var id = Convert.ToInt64(this.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var res = await userService.GetUserById(id);
             if (res != null)
             {
                 return ApiResponse.Ok(res);

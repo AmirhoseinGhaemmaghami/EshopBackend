@@ -48,9 +48,9 @@ namespace EshopBackend.Core.Services
             return false;
         }
 
-        public async Task<LoginResultDto> GetUserByEmail(string email)
+        public async Task<LoginResultDto> GetUserById(long userId)
         {
-            var user = await this.genericRepository.GetSingleWithSpecAsync(u => u.Email == email.ToLower().Trim());
+            var user = await this.genericRepository.GetByIdAsync(userId);
             if (user == null)
                 return null;
 
@@ -119,7 +119,6 @@ namespace EshopBackend.Core.Services
                     var token = tokenServcie.createToken(user);
                     return new LoginResultDto()
                     {
-                        UserId = user.Id,
                         Email = user.Email,
                         FirstName = user.FirstName,
                         LastName = user.LastName,

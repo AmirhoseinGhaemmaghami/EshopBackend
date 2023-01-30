@@ -27,5 +27,6 @@
 
         public int StatusCode { get; set; }
         public string Message { get; set; }
+        public bool Critical { get; set; } = true;
     }
 }

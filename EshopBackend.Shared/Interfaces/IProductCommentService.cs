@@ -12,6 +12,6 @@ namespace EshopBackend.Shared.Interfaces
     {
         Task<List<ProductComment>> GetProductComments(long id);
 
-        Task<bool> AddProductComment(ProductCommentInputDto productCommentInputDto, string email);
+        Task<bool> AddProductComment(ProductCommentInputDto productCommentInputDto, long userId);
     }
 }

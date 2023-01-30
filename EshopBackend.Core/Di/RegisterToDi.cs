@@ -30,6 +30,7 @@ namespace EshopBackend.Core.Di
             services.AddScoped<IEmailConfirmationService, EmailConfirmationService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductCommentService, ProductCommentService>();
+            services.AddScoped<IOrderService, OrderService>();
 
             return services;
         }

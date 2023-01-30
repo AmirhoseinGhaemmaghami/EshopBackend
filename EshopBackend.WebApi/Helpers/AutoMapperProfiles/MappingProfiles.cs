@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using EshopBackend.Shared.Dtos.Order;
 using EshopBackend.Shared.Dtos.Product;
 using EshopBackend.Shared.Dtos.ProductComment;
 using EshopBackend.Shared.Dtos.Slider;
+using EshopBackend.Shared.Entities.Order;
 using EshopBackend.Shared.Entities.Site;
 using EshopBackend.Shared.Entities.Store;
 using System.Runtime.CompilerServices;
@@ -25,6 +27,10 @@ namespace EshopBackend.WebApi.Helpers.AutoMapperProfiles
                 .ForMember(dto => dto.UserFirstName, o => o.MapFrom(p => p.User.FirstName))
                 .ForMember(dto => dto.UserLastName, o => o.MapFrom(p => p.User.LastName))
                 .ForMember(dto => dto.UserEmail, o => o.MapFrom(p => p.User.Email));
+
+            this.CreateMap<Order, OrderOutputDto>();
+            this.CreateMap<OrderLine, OrderLineOutputDto>();
+            //.ForMember(dto => dto.Product, options => options.MapFrom(o => o.Product));
         }
     }
 }

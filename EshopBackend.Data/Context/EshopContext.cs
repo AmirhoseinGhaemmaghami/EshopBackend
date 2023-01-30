@@ -1,5 +1,6 @@
 ﻿using EshopBackend.Shared.Entities.Access;
 using EshopBackend.Shared.Entities.Account;
+using EshopBackend.Shared.Entities.Order;
 using EshopBackend.Shared.Entities.Site;
 using EshopBackend.Shared.Entities.Store;
 using Microsoft.EntityFrameworkCore;
@@ -45,6 +46,8 @@ namespace EshopBackend.Data.Context
         public DbSet<ProductGallery> ProductGalleries { get; set; }
         public DbSet<ProductVisit> ProductVisits { get; set; }
         public DbSet<ProductComment> ProductComments { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderLine> OrderLines { get; set; }
 
         #endregion
     }
