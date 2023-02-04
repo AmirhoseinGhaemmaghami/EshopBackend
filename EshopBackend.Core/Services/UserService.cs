@@ -61,7 +61,8 @@ namespace EshopBackend.Core.Services
                     Email = user.Email,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
-                    IsActivated = user.IsActivated
+                    IsActivated = user.IsActivated,
+                    Address = user.Address
                 };
             }
             var token = tokenServcie.createToken(user);
@@ -72,7 +73,8 @@ namespace EshopBackend.Core.Services
                 LastName = user.LastName,
                 Token = token.Token,
                 TokenExpireDate = token.ExpireDate,
-                IsActivated = user.IsActivated
+                IsActivated = user.IsActivated,
+                Address= user.Address
             };
         }
 
@@ -154,6 +156,22 @@ namespace EshopBackend.Core.Services
             await this.emailService.SendVefrificationEmail(user);
 
             return new RegisterResultDto() { Success = res, DuplicateEmail = false };
+        }
+
+        public async Task<EditUserResultDto> UpdateUser(long userId, string firstname, string lastname, string address)
+        {
+            var user = await this.genericRepository.GetByIdAsync(userId);
+            user.FirstName = firstname;
+            user.LastName = lastname;
+            user.Address = address;
+            await this.genericRepository.UpdateAsync(user);
+            await this.genericRepository.SaveChanges();
+            return new EditUserResultDto()
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Address = user.Address
+            };
         }
     }
 }

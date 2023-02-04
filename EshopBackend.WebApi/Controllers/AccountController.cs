@@ -63,5 +63,14 @@ namespace EshopBackend.WebApi.Controllers
         {
             return ApiResponse.Ok(await this.userService.ConfirmEmail(userId, code));
         }
+
+        [HttpPut("")]
+        [Authorize]
+        public async Task<ActionResult<EditUserResultDto>> EditUser(string firstname, string lastname, string address) 
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await this.userService.UpdateUser(Convert.ToInt64(userId), firstname, lastname, address);
+            return ApiResponse.Ok(user);
+        }
     }
 }

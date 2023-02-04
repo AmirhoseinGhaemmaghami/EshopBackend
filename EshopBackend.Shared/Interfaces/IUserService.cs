@@ -21,5 +21,7 @@ namespace EshopBackend.Shared.Interfaces
         Task<LoginResultDto> GetUserById(long id);
 
         Task<bool> ConfirmEmail(int userId, string code);
+
+        Task<EditUserResultDto> UpdateUser(long userId, string firstname, string lastname, string address);
     }
 }
